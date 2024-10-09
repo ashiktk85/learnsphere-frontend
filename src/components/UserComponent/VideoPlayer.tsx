@@ -109,7 +109,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     <div className="basis-8/12">
       <video
         src={video?.url}
-        className="w-full rounded-lg"
+        className="w-full rounded-lg h-[550px] object-cover"
         controls
         autoPlay
         muted
