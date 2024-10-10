@@ -1,0 +1,22 @@
+import { useEffect } from "react";
+import { preLoaderAnim } from "../../utils/loadingAnimation";
+
+
+const PreLoader = () => {
+    useEffect(() => {
+      preLoaderAnim();
+    }, []);
+  
+    return (
+      <div className="preloader h-screen w-full bg-black text-white flex justify-center items-center overflow-hidden">
+        <div className="texts-container flex items-center justify-between h-[60px] w-[280px] text-[20px] font-bold overflow-hidden">
+          <span>Learn,</span>
+          <span>Inspire,</span>
+          <span>Share,</span>
+        </div>
+      </div>
+    );
+  };
+  
+  export default PreLoader;
+  
