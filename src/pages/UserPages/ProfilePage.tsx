@@ -12,6 +12,7 @@ import ProfileTutors from "../../components/UserComponent/ProfileTutors";
 import BlockChecker from "../../services/BlockChecker";
 import ProfileImage from "../../components/UserComponent/profileImg";
 import Wallet from "../../components/UserComponent/wallet";
+import { Home } from 'lucide-react';
 
 const ProfilePage = () => {
 
@@ -44,10 +45,16 @@ const ProfilePage = () => {
       
       <div className="min-h-screen overflow-hidden bg-backgorund">
         <div className="relative">
-          <div
-            className="h-64 bg-cover bg-center m-8 rounded-lg"
-            style={{ backgroundImage: `url(${proBanner})` }}
-          ></div>
+        <div className="relative">
+      <div
+        className="h-64 bg-cover bg-center m-8 rounded-lg"
+        style={{ backgroundImage: `url(${proBanner})` }}
+      >
+        <div className="absolute top-2 left-2 bg-white bg-opacity-75 p-2 rounded-full">
+          <Home className="text-gray-700" size={20} />
+        </div>
+      </div>
+    </div>
           <div className="absolute bottom-[-40px] left-0 right-0 flex justify-center">
             <div className="relative bg-white rounded-2xl shadow-lg p-6 w-11/12 max-w-4xl overflow-hidden opacity-95">
               <div className="absolute inset-0 bg-white backdrop-blur-md"></div>
