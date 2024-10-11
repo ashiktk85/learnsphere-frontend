@@ -13,12 +13,14 @@ import BlockChecker from "../../services/BlockChecker";
 import ProfileImage from "../../components/UserComponent/profileImg";
 import Wallet from "../../components/UserComponent/wallet";
 import { Home } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
 
   BlockChecker();
   
   const data: any = useSelector((state: RootState) => state.user);
+  const navigate = useNavigate()
 
   const menuItems = [
     { name: 'Personal Info', Component: <UserDetails /> },
@@ -51,7 +53,7 @@ const ProfilePage = () => {
         style={{ backgroundImage: `url(${proBanner})` }}
       >
         <div className="absolute top-2 left-2 bg-white bg-opacity-75 p-2 rounded-full">
-          <Home className="text-gray-700" size={20} />
+          <Home className="text-gray-700" size={20} onClick={() => navigate('/')}/>
         </div>
       </div>
     </div>
