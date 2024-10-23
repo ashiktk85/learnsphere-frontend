@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import BlockChecker from "../../services/BlockChecker";
 import triggerConfetti from "../../utils/confetti";
+import userAxiosInstance from "../../config/axiosInstance/userInstance";
 
 interface IcourseData {
   name: string;
@@ -53,7 +54,7 @@ const Checkout = () => {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const response = await axios.get(`${Base_URL}/getCourse/${id}`);
+        const response = await userAxiosInstance.get(`/getCourse/${id}`);
         setCourseData(response.data);
       } catch (error) {
         console.error("Error fetching course data:", error);
@@ -65,7 +66,7 @@ const Checkout = () => {
   const handlePayment = async () => {
     if (courseData?.price === "Free") {
       try {
-        const res = await axios.post(`${Base_URL}/saveCourse`, {
+        const res = await userAxiosInstance.post(`/saveCourse`, {
           userId : userInfo?.userId,
           email: email,
           courseId: id,

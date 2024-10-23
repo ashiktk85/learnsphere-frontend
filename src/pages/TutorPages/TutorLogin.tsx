@@ -87,7 +87,9 @@ const TutorLogin: React.FC = () => {
             />
           </div>
           <div className="bg-[#f5f5f5] h-full w-full font-poppins">
-            <h2 className="p-10 text-4xl text-green-500 font-bold">
+            <h2 className="p-10 text-4xl text-green-500 font-bold cursor-pointer"
+            onClick={() => navigate('/tutor')}
+            >
               Learn Sphere
             </h2>
             <h3 className="pl-10 pb-2 text-xl font-bold ">Login</h3>

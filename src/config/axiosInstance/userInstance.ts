@@ -2,29 +2,23 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
-const url = "https://api.kevinhills.shop";
+const url = "http://localhost:7000";
+const storedUserInfo = localStorage.getItem('userInfo');
+let userInfo
+let userId
+if(storedUserInfo) {
+   userInfo = JSON.parse(storedUserInfo);
+   userId = userInfo.userId;
+}
+  
+  
+  
+
 const userAxiosInstance = axios.create({
   baseURL: url,
-  withCredentials: true,
+  withCredentials: true, 
+  headers: userId ? { 'userId': userId } : {},
 });
-
-userAxiosInstance.interceptors.request.use(
-  (config) => {
-    const accessToken = localStorage.getItem("accessToken");
-
-
-    if (accessToken) {
-      config.headers['Authorization'] = `Bearer ${accessToken}`;
-    }
-// console.log(config);
-
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 userAxiosInstance.interceptors.response.use(
   (response) => {
@@ -37,18 +31,16 @@ userAxiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const response = await axios.post(`${url}/refresh-token`, {}, {
+        
+        await axios.post(`${url}/refresh-token`, {}, {
           withCredentials: true,
         });
 
-        const { accessToken } = response.data;
-
-        localStorage.setItem("accessToken", accessToken);
-        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-
+       
         return userAxiosInstance(originalRequest);
       } catch (refreshError) {
         console.error("Token refresh failed:", refreshError);
+       
         return Promise.reject(refreshError);
       }
     }

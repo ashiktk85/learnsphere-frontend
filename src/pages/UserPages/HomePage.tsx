@@ -13,6 +13,7 @@ import CoursesHome from "../../components/UserComponent/CoursesHome";
 import About from "../../components/UserComponent/About";
 import Mission from "../../components/UserComponent/mission";
 import PreLoader from "../../components/common/preLoader";
+import Features from "../../components/UserComponent/Features";
 
 const Home: React.FC = () => {
 
@@ -27,8 +28,8 @@ const Home: React.FC = () => {
      <Navbar />
      <About />
     
-    
     <CoursesHome />
+    <Features />
     <Footer />
    
     </main>

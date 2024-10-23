@@ -17,6 +17,8 @@ import TutorsPage from '../pages/UserPages/TutorsPage';
 import TutorDetails from '../pages/UserPages/TutorDetails';
 import CoursePlayer2 from '../pages/UserPages/CoursePlayer2';
 import MyOrders from '../pages/UserPages/MyOrders';
+import ChatBotPage from '../pages/UserPages/ChatBotPage';
+import LandingPage from '../pages/UserPages/Home2';
 // import OrderHistory from '../pages/UserPages/OrderHistory';
 
 const UserRoutes = () => {
@@ -24,6 +26,7 @@ const UserRoutes = () => {
        <>
         <Routes >
                 <Route path = '' element = {<Home />} />
+                <Route path = '/home' element = {<LandingPage />} />
                 <Route path= '/otp' element = {<OtpPage /> } />
                 <Route path= "/login" element ={<UserLogin />} />
                 <Route path= '/profile' element = {<UserProtector><ProfilePage /></UserProtector>} />
@@ -37,6 +40,7 @@ const UserRoutes = () => {
                 <Route path = '/tutors' element = {<TutorsPage />} />
                 <Route path = '/tutorDetails/:id' element = {<TutorDetails />} />
                 <Route path = '/my-orders/:userId' element = {<UserProtector> <MyOrders /></UserProtector>} />
+                <Route path = '/chat-bot' element = {<ChatBotPage />} />
                 {/* <Route path = '/orders' element = {<OrderHistory />} /> */}
         </Routes>
        </>

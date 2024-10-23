@@ -61,7 +61,7 @@ const TutorMainPage = () => {
         </div>
         <div className="w-full flex h-60 gap-2 justify-between">
           <ProfileCard
-            profileUrl={tutor?.profileUrl || defaultProfile}
+            profileUrl={tutor?.profileUrl === "" ? defaultProfile : tutor?.profileUrl || defaultProfile}
             name={tutor?.name || "Tutor Name"}
             email={email || "Email not available"}
             followers={tutor?.followers || 0}

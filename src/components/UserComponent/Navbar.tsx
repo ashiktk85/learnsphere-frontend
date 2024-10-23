@@ -37,11 +37,11 @@ const Navbar = () => {
   };
 
   const LINKS = [
-    { text: "Plans", path: "/plans" },
     { text: "Courses", path: "/coursesPage" },
     { text: "Be a Tutor", path: "/tutor" },
     { text: "Orders", path: `/my-orders/${userId}` },
-    { text: "Contact", path: "/contact" },
+    { text: "Contact", path: "/contact" },  
+    { text: "Ask AI", path: "/chat-bot" },
     // { text: "Profile", path: "/profile" },
   ];
 

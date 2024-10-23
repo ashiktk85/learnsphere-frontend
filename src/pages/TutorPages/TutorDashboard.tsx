@@ -100,7 +100,7 @@ const TutorDashboard: React.FC = () => {
   return (
     <div className="min-h-screen w-full flex bg-gray-100 font-poppins gap-2">
       <div className="bg-white flex-shrink-0 w-1/6 rounded-md shadow-lg flex flex-col fixed h-full z-50">
-        <h1 className="p-5 text-green-500 font-extrabold text-2xl">Learn Sphere</h1>
+        <h1 className="p-5 text-green-500 font-extrabold text-2xl cursor-pointer" onClick={() => navigae('/tutor')}>Learn Sphere</h1>
         <p className="pl-5 pt-6 font-medium text-xl">Overview</p>
         <div className="flex-grow">
           {menuItems.map((item, index) => (

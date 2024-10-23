@@ -8,6 +8,7 @@ import TutorLogin from '../pages/TutorPages/TutorLogin';
 import TutorDashboard from '../pages/TutorPages/TutorDashboard';
 import AddSection from '../components/TutorComponent/CourseAddsection';
 import CourseEdit from '../pages/TutorPages/CourseEdit';
+import KycPage from '../pages/TutorPages/KycPage';
 
 
 const TutorRoutes = () => {
@@ -20,7 +21,7 @@ const TutorRoutes = () => {
                 <Route path=  '/login' element = {<UserProtector> <TutorLogin /> </UserProtector>} />
                 <Route path='/dashboard' element = {<UserProtector> <TutorDashboard /> </UserProtector>} />
                 <Route path = '/course-edit/:id' element = {<UserProtector> <CourseEdit /> </UserProtector>} />
-
+                <Route path = '/kyc' element = {<UserProtector> <KycPage /> </UserProtector>} />
             </Routes>
         </div>
     );

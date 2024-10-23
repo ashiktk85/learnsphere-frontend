@@ -8,6 +8,7 @@ import userAxiosInstance from "../../config/axiosInstance/userInstance";
 import { Base_URL } from "../../credentials";
 import CourseCard from "../../components/UserComponent/CourseCard";
 import BlockChecker from "../../services/BlockChecker";
+import { toast } from "sonner";
 
 const MyCourses: React.FC = () => {
   BlockChecker()
@@ -21,8 +22,9 @@ const MyCourses: React.FC = () => {
           `${Base_URL}/mycourses/${userInfo?.userId}?type=${filterType}`
         );
         setCourseData(response.data);
-      } catch (error) {
+      } catch (error : any) {
         console.error("Error fetching courses:", error);
+        toast.error(error.message)
       }
     };
 
