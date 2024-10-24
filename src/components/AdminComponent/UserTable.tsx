@@ -125,13 +125,13 @@ const UsersPage: React.FC = () => {
       <div className="layout-container flex h-full grow flex-col">
         <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f4] px-10 py-3">
           <div className="flex items-center gap-4 text-[#111418]">
-            {/* Additional header content */}
+    
           </div>
         </header>
         <div className="px-0 flex flex-1 justify-center py-5">
           <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
             <div className="flex flex-wrap justify-between gap-3 p-4">
-              {/* Additional filters or buttons */}
+          
             </div>
             <div className="px-4 py-3">
               <label className="flex flex-col min-w-40 h-12 w-full">
