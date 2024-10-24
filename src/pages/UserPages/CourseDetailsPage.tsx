@@ -180,7 +180,7 @@ import { MdOndemandVideo } from "react-icons/md"
 import Footer from "../../components/common/UserCommon/Footer";
  import BlockChecker from "../../services/BlockChecker";
  import userAxiosInstance from "../../config/axiosInstance/userInstance";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../components/ui/accordion"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../components/ui/accordian"
 import { Button } from "../../components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../components/ui/card"
 import { Badge } from "../../components/ui/badge"
