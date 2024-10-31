@@ -4,6 +4,8 @@ import React, {
   useEffect,
   useState,
   useRef,
+  useMemo,
+  useCallback,
 } from "react";
 import { BsSendFill } from "react-icons/bs";
 import io from "socket.io-client";
@@ -12,30 +14,58 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import userAxiosInstance from "../../config/axiosInstance/userInstance";
 import { defaultProfile } from "../../assets/svgs/icons";
+import Msg from "./Message";
+
+interface UserDetails {
+  firstName: string;
+  lastName: string;
+  email: string;
+  profileUrl: string;
+}
 
 interface Message {
   userId: string;
   message: string;
   timestamp: string;
-  userDetails: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    profileUrl: string;
-  };
+  userDetails: UserDetails;
 }
 
-const GroupChat: React.FC = () => {
+interface TypingUser {
+  userId: string;
+  username: string;
+}
+
+const TypingIndicator: React.FC<{ typingUsers: TypingUser[] }> = ({
+  typingUsers,
+}) => {
+  if (typingUsers.length === 0) return null;
+  return (
+    <p className="text-gray-200 text-sm italic">
+      {typingUsers.map((user) => user.username).join(", ")} is typing...
+    </p>
+  );
+};
+
+const GroupChat: React.FC = React.memo(() => {
   const { userInfo } = useSelector((state: RootState) => state.user);
   const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [courseData, setCourseData] = useState<any[]>([]);
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [typingUsers, setTypingUsers] = useState<TypingUser[]>([]);
   const socketRef = useRef<any>(null);
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isTypingRef = useRef(false);
+
+  const selectedCourseData = useMemo(() => {
+    return courseData.find(
+      (course: any) => course._doc?.courseId === selectedCourse
+    );
+  }, [courseData, selectedCourse]);
 
   useEffect(() => {
-    const fetchCourseData = async () => {
+    const fetchCourses = async () => {
       try {
         const response = await userAxiosInstance.get(
           `${Base_URL}/mycourses/${userInfo?.userId}`
@@ -46,7 +76,22 @@ const GroupChat: React.FC = () => {
       }
     };
 
-    fetchCourseData();
+    fetchCourses();
+
+    if (userInfo?.userId) {
+      socketRef.current = io(Base_URL);
+      const socket = socketRef.current;
+
+      socket.on("connect", () => {
+        console.log("Connected to socket server");
+      });
+
+      
+      return () => {
+        socket.disconnect();
+        console.log("Disconnected from socket server");
+      };
+    }
   }, [userInfo?.userId]);
 
   useEffect(() => {
@@ -78,39 +123,95 @@ const GroupChat: React.FC = () => {
         setMessages((prevMsgs) => [...prevMsgs, payload]);
       });
 
+      socket.on("userTyping", (userId: string, user: string) => {
+        const username = user;
+        const existingUser = typingUsers.find((user) => user.userId === userId);
+        if (!existingUser) {
+          setTypingUsers((prevTypingUsers) => [
+            ...prevTypingUsers,
+            { userId, username },
+          ]);
+        }
+      });
+
+      socket.on("userStoppedTyping", (userId: string) => {
+        setTypingUsers((prevTypingUsers) =>
+          prevTypingUsers.filter((user) => user.userId !== userId)
+        );
+      });
+
       return () => {
         socket.off("receiveMessage");
+        socket.off("userTyping");
+        socket.off("userStoppedTyping");
         socket.disconnect();
       };
     }
   }, [selectedCourse]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setMessage(e.target.value);
-  };
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setMessage(e.target.value);
+      if (selectedCourse && socketRef.current && !isTypingRef.current) {
+        isTypingRef.current = true;
+        socketRef.current.emit("typing", {
+          courseId: selectedCourse,
+          userId: userInfo?.userId,
+          username: userInfo?.firstName || "Unknown User",
+        });
+        if (typingTimeoutRef.current) {
+          clearTimeout(typingTimeoutRef.current);
+        }
+        typingTimeoutRef.current = setTimeout(() => {
+          socketRef.current.emit("stopTyping", {
+            courseId: selectedCourse,
+            userId: userInfo?.userId,
+          });
+          isTypingRef.current = false;
+        }, 2000);
+      }
+    },
+    [selectedCourse, userInfo]
+  );
 
-  const submit = (e: FormEvent) => {
-    e.preventDefault();
-    if (message.trim() !== "" && selectedCourse) {
-      const userId = userInfo?.userId;
-      socketRef.current?.emit("sendMessage", {
-        courseId: selectedCourse,
-        message,
-        userId,
-      });
-      setMessage("");
-    }
-  };
+  const submit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+      if (message.trim() !== "" && selectedCourse) {
+        const userId = userInfo?.userId;
+        socketRef.current?.emit("sendMessage", {
+          courseId: selectedCourse,
+          message,
+          userId,
+        });
+        setMessage("");
+      }
+    },
+    [message, selectedCourse, userInfo]
+  );
 
-  const handleCourseClick = (courseId: string) => {
+  const handleCourseClick = useCallback((courseId: string) => {
     setSelectedCourse(courseId);
     setMessages([]);
+    setTypingUsers([]);
+  }, []);
+
+  const handleReply = (message: Message) => {
+    
+    console.log("Replying to:", message);
+  };
+
+  
+  const handleDelete = (messageId: string) => {
+    setMessages((prevMessages) =>
+      prevMessages.filter((msg) => msg.userId !== messageId)
+    );
   };
 
   return (
     <main className="flex flex-col md:flex-row w-full h-full gap-5 p-4">
       <section className="w-full md:w-1/4 bg-white h-full rounded-lg overflow-hidden">
-        <div className="px-4 py-3 md:px-8 md:py-5">
+      <div className="px-4 py-3 md:px-8 md:py-5">
           <h1 className="text-lg font-bold">All chats</h1>
           <input
             type="search"
@@ -145,81 +246,37 @@ const GroupChat: React.FC = () => {
       <section className="bg-white w-full h-full rounded-lg px-3 py-2 flex flex-col">
         {selectedCourse ? (
           <>
-            <div className="w-full h-12 bg-orange-50 rounded-md mb-2"></div>
-
-            <div
-              className="flex-grow bg-gray-100 overflow-y-auto rounded-md mb-2 p-3"
-              style={{
-                // backgroundImage: 'url(https://i.pinimg.com/564x/f9/b2/0c/f9b20cfb86e7775f86124bee62d13458.jpg)',
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
+            <div className="flex items-center p-2 bg-black text-white rounded-t-lg gap-5">
+              {selectedCourseData && (
+                <>
+                  <img
+                    src={selectedCourseData?.thumbnail}
+                    alt=""
+                    className="w-8 h-8 rounded-full mr-2"
+                  />
+                  <p className="font-medium">{selectedCourseData._doc?.name}</p>
+                </>
+              )}
+              <TypingIndicator typingUsers={typingUsers} />
+            </div>
+            <div className="flex-grow bg-gray-100 overflow-y-auto rounded-b-lg p-3">
               {isLoading ? (
                 <p className="text-center text-gray-500">Loading messages...</p>
               ) : messages.length > 0 ? (
                 messages.map((msg, index) => (
-                  <div
+                  <Msg
                     key={index}
-                    className={`flex ${
-                      msg.userId === userInfo?.userId
-                        ? "justify-end"
-                        : "justify-start"
-                    } mb-2`}
-                  >
-                    <div>
-                      <div className="flex gap-2">
-                        <img
-                          src={msg.userDetails?.profileUrl || defaultProfile}
-                          alt=""
-                          className="h-5 w-5 object-cover rounded-full"
-                        />
-                        <strong
-                          className={`flex ${
-                            msg.userId === userInfo?.userId
-                              ? "justify-end"
-                              : "justify-start"
-                          } text-sm mb-1`}
-                        >
-                          {msg.userDetails
-                            ? `${msg.userDetails.firstName} ${msg.userDetails.lastName}`
-                            : "Unknown User"}
-                          :
-                        </strong>{" "}
-                      </div>
-
-                      <div
-                        className={`relative max-w-xs p-2 rounded-lg ${
-                          msg.userId === userInfo?.userId
-                            ? "bg-blue-100 text-left"
-                            : "bg-green-100 text-right"
-                        }`}
-                      >
-                        <p
-                          className={`mb-2 ${
-                            msg.userId === userInfo?.userId
-                              ? "text-right"
-                              : "text-left"
-                          }`}
-                        >
-                          {msg.message}
-                        </p>
-
-                        <span className="absolute bottom-1 right-2 text-gray-500 text-[10px]">
-                          {new Date(msg.timestamp).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                    message={msg}
+                    onDelete={handleDelete}
+                    // onReply={handleReply}
+                    isUserMessage={msg.userId === userInfo?.userId}
+                  />
+                  // <p key={index}>{msg.message}</p>
                 ))
               ) : (
                 <p className="text-center text-gray-500">No messages yet.</p>
               )}
             </div>
-
             <form className="w-full h-12 flex" onSubmit={submit}>
               <input
                 type="text"
@@ -241,6 +298,6 @@ const GroupChat: React.FC = () => {
       </section>
     </main>
   );
-};
+});
 
 export default GroupChat;

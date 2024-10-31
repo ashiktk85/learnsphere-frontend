@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import BlockChecker from "../../services/BlockChecker";
 import Footer from "../../components/common/UserCommon/Footer";
+import Skeleton from '../../components/ui/skeleton'
 
 interface Category {
   _id: string;
@@ -32,7 +33,8 @@ const AllCourses: React.FC = () => {
   const coursesPerPage = 8;
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [sortOption, setSortOption] = useState<string>("All"); // Add sort option state
+  const [sortOption, setSortOption] = useState<string>("All"); 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const fetchCourses = useCallback(async () => {
     try {
@@ -42,6 +44,8 @@ const AllCourses: React.FC = () => {
       setTotalPages(Math.ceil(response.data.courses.length / coursesPerPage));
     } catch (error: any) {
       console.error("Error fetching courses:", error.message);
+    } finally {
+      setIsLoading(false); 
     }
   }, []);
 
@@ -109,9 +113,9 @@ const AllCourses: React.FC = () => {
   };
 
   const handleFilterClick = (option: string) => {
-    setSortOption(option); // Set the selected sorting option
+    setSortOption(option); 
     setIsDropdownOpen(false);
-    setCurrentPage(1); // Reset to the first page when sorting
+    setCurrentPage(1); 
   };
 
   return (
@@ -210,20 +214,29 @@ const AllCourses: React.FC = () => {
             </div>
 
             {displayedCourses.length === 0 ? (
-              <div className="mt-5 text-lg">No courses available</div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {displayedCourses.map(course => (
-                   <CourseCard
-                   key={course._id}
-                   courseName={course.name}
-                   thumbnail={course.thumbnail}
-                   courseId={course.courseId}
-                   price={course.price}
-                 />
-                ))}
-              </div>
-            )}
+  isLoading ? (
+    <div>
+      {[...Array(8)].map((_, index) => (
+        <Skeleton key={index} className="w-10 h-5" />
+      ))}
+    </div>
+  ) : (
+    <div className="mt-5 text-lg">No courses available</div>
+  )
+) : (
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {displayedCourses.map(course => (
+      <CourseCard
+        key={course._id}
+        courseName={course.name}
+        thumbnail={course.thumbnail}
+        courseId={course.courseId}
+        price={course.price}
+      />
+    ))}
+  </div>
+)}
+
             
             <div className="flex justify-center py-4">
               <button

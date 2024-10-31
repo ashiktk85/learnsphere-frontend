@@ -9,6 +9,7 @@ import { Base_URL } from "../../credentials";
 import { toast } from "sonner";
 import axios from "axios";
 import dayjs from "dayjs"; // For formatting dates
+import TutorProfileCard from "./TutorProfileCard";
 
 const socket = io(Base_URL);
 
@@ -133,7 +134,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       </div>
       <hr className="border-0 h-[1px] bg-[#ccc] my-3" />
 
-      <div className="flex items-center mt-5 pb-10">
+      {/* <div className="flex items-center mt-5 pb-10">
         <img
           src={tutorProfile || defaultProfile}
           className="h-24 w-24 rounded-full mr-4 object-cover"
@@ -151,7 +152,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             View Tutor
           </button>
         </div>
-      </div>
+      </div> */}
+      <div className="w-full h-[250px]">
+
+
+<TutorProfileCard
+ name = {tutorName || ""}
+ profile={tutorProfile || defaultProfile}
+ id = {tutorId || ""}
+/>
+ </div>
 
       <hr />
 

@@ -6,6 +6,7 @@ import { RootState } from "../../redux/store";
 import { Base_URL } from "../../credentials";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
+import userAxiosInstance from "../../config/axiosInstance/userInstance";
 
 interface IcourseData {
   courseName: string;
@@ -36,7 +37,7 @@ const CourseCard: React.FC<IcourseData> = ({
 
   const gotoCourseDetails = async() => {
     try {
-      const response = await axios.get(`${Base_URL}/check-enrollment/${email}/${courseId}`)
+      const response = await userAxiosInstance.get(`/check-enrollment/${email}/${courseId}`)
       console.log(response.data,"rs");
       
       if (response.data) {
@@ -64,6 +65,7 @@ const CourseCard: React.FC<IcourseData> = ({
           backgroundImage: `url(${thumbnail})`,
         }}
         onClick={gotoCourseDetails}
+        
       ></div>
 
       <div className="w-3/4">

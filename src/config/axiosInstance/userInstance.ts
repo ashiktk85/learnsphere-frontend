@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { Base_URL } from "../../credentials";
 
-const url = "http://localhost:7000";
+
 const storedUserInfo = localStorage.getItem('userInfo');
 let userInfo
 let userId
@@ -10,12 +11,8 @@ if(storedUserInfo) {
    userInfo = JSON.parse(storedUserInfo);
    userId = userInfo.userId;
 }
-  
-  
-  
-
 const userAxiosInstance = axios.create({
-  baseURL: url,
+  baseURL: Base_URL,
   withCredentials: true, 
   headers: userId ? { 'userId': userId } : {},
 });
@@ -32,7 +29,7 @@ userAxiosInstance.interceptors.response.use(
 
       try {
         
-        await axios.post(`${url}/refresh-token`, {}, {
+        await axios.post(`${Base_URL}/refresh-token`, {}, {
           withCredentials: true,
         });
 

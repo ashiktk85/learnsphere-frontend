@@ -10,14 +10,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import userAxiosInstance from "../../config/axiosInstance/userInstance";
+import axios from "axios";
+import { Base_URL } from "../../credentials";
 
 const TutorHome = () => {
   const [istutor, setIsTutor] = useState<boolean | null>(null);
+  const {userInfo} = useSelector((state : RootState) => state.user)
 
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const { data } = await userAxiosInstance.get("/tutor/check-tutorstaus");
+        const { data } = await axios.get(`${Base_URL}/admin/check-tutorstatus/${userInfo?.email}`);
         setIsTutor(data);
       } catch (error) {}
     };
