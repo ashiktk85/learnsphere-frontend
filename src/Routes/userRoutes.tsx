@@ -10,7 +10,7 @@ import UserProtector from '../services/UserProtector';
 import AllCourses from '../pages/UserPages/AllCourses';
 import CourseDetailsPage from '../pages/UserPages/CourseDetailsPage';
 import Checkout from '../pages/UserPages/Checkout';
-import CoursePlayer from '../pages/UserPages/CoursePlayer';
+
 import MyCourses from '../pages/UserPages/MyCourses';
 import Community from '../pages/UserPages/Community';
 import TutorsPage from '../pages/UserPages/TutorsPage';
