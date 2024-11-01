@@ -18,10 +18,13 @@ import TutorDetails from '../pages/UserPages/TutorDetails';
 import CoursePlayer2 from '../pages/UserPages/CoursePlayer2';
 import MyOrders from '../pages/UserPages/MyOrders';
 import ChatBotPage from '../pages/UserPages/ChatBotPage';
+import BlockChecker from '../services/BlockChecker';
 
 // import OrderHistory from '../pages/UserPages/OrderHistory';
 
 const UserRoutes = () => {
+ 
+    
     return (
        <>
         <Routes >

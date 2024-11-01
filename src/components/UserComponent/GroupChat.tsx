@@ -24,9 +24,11 @@ interface UserDetails {
 }
 
 interface Message {
+  _id :string;
   userId: string;
   message: string;
   timestamp: string;
+  deleted : boolean;
   userDetails: UserDetails;
 }
 
@@ -197,15 +199,24 @@ const GroupChat: React.FC = React.memo(() => {
   }, []);
 
   const handleReply = (message: Message) => {
-    
+   
     console.log("Replying to:", message);
+
   };
 
   
   const handleDelete = (messageId: string) => {
+    socketRef.current.emit("deleteMessage", {
+      messageId : messageId,
+      courseId : selectedCourse
+    });
+
     setMessages((prevMessages) =>
-      prevMessages.filter((msg) => msg.userId !== messageId)
+      prevMessages.map((msg) =>
+        msg._id === messageId ? { ...msg, deleted: true, message: "This message was deleted" } : msg
+      )
     );
+    
   };
 
   return (

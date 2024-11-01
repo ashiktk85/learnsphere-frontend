@@ -4,9 +4,9 @@ import { toast, Toaster } from "sonner";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { updateUserBlockStatus } from "../../redux/actions/adminActions";
-import Avatar from '@mui/joy/Avatar';
+import Avatar from "@mui/joy/Avatar";
 import { Base_URL } from "../../credentials";
-
+import { FaArrowRight ,FaArrowLeft } from "react-icons/fa6";
 
 interface User {
   isBlocked: boolean;
@@ -32,46 +32,47 @@ const UsersPage: React.FC = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
+
+  const fetchUsers = async (page: number) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${Base_URL}/admin/getusers`, {
+        params: {
+          page,
+          limit: itemsPerPage,
+          search: search.trim(), 
+        },
+      });
+
+      console.log("API Response:", response.data);
+      const fetchedUsers = response.data.users || [];
+      setUsers(fetchedUsers);
+      setFilteredUsers(fetchedUsers);
+      setTotalPages(response.data.totalPages || 1);
+    } catch (err) {
+      console.error("Error fetching users:", err);
+      setError(err as Error);
+      toast.error("Failed to fetch users");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`${Base_URL}/admin/getusers`, {
-          params: {
-            page: currentPage,
-            limit: itemsPerPage,
-          },
-        });
+    fetchUsers(currentPage);
+  }, [currentPage, search]);
 
-        console.log("API Response:", response.data);
-        const fetchedUsers = response.data.users || [];
-        setUsers(fetchedUsers);
-        setFilteredUsers(fetchedUsers); 
-        setTotalPages(response.data.totalPages || 1);
-      } catch (err) {
-        console.error("Error fetching users:", err);
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
-    fetchData();
-  }, [currentPage]);
-
-  useEffect(() => {
- 
-    const filtered = users.filter((user) =>
-      `${user.firstName} ${user.lastName}`.toLowerCase().includes(search.toLowerCase()) ||
-      user.email.toLowerCase().includes(search.toLowerCase()) ||
-      user.phone.includes(search)
-    );
-    setFilteredUsers(filtered);
-    setTotalPages(Math.ceil(filtered.length / itemsPerPage));
-    setCurrentPage(1); 
-  }, [search, users]);
+  const handleSearch = (searchTerm: string) => {
+    setSearch(searchTerm);
+    setCurrentPage(1);
+  };
 
   const handleBlockClick = (user: User) => {
     setSelectedUser(user);
@@ -95,15 +96,11 @@ const UsersPage: React.FC = () => {
           })
         ).unwrap();
 
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
-            user.email === selectedUser.email
-              ? { ...user, isBlocked: modalAction === "block" }
-              : user
-          )
-        );
+        
+        await fetchUsers(currentPage);
+        toast.success(`User successfully ${modalAction}ed`);
       } catch (error) {
-        toast.error("Error updating user status");
+        toast.error(`Error ${modalAction}ing user`);
       } finally {
         setShowModal(false);
         setSelectedUser(null);
@@ -111,28 +108,15 @@ const UsersPage: React.FC = () => {
     }
   };
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  const paginatedUsers = filteredUsers.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
   return (
     <div className="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden overflow-hidden font-sans">
       <div className="layout-container flex h-full grow flex-col">
         <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f4] px-10 py-3">
-          <div className="flex items-center gap-4 text-[#111418]">
-    
-          </div>
+          <div className="flex items-center gap-4 text-[#111418]"></div>
         </header>
         <div className="px-0 flex flex-1 justify-center py-5">
           <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div className="flex flex-wrap justify-between gap-3 p-4">
-          
-            </div>
+            <div className="flex flex-wrap justify-between gap-3 p-4"></div>
             <div className="px-4 py-3">
               <label className="flex flex-col min-w-40 h-12 w-full">
                 <div className="flex w-full flex-1 items-stretch rounded-xl h-full">
@@ -150,7 +134,7 @@ const UsersPage: React.FC = () => {
                   <input
                     placeholder="Search by username, email.."
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => handleSearch(e.target.value)}
                     className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#111418] focus:outline-0 focus:ring-0 border-none bg-[#f0f2f4] focus:border-none h-full placeholder:text-[#637588] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
                   />
                 </div>
@@ -159,49 +143,22 @@ const UsersPage: React.FC = () => {
             <div className="px-4 py-3">
               <div className="flex overflow-hidden rounded-xl border border-[#dce0e5] bg-white">
                 <table className="flex-1">
-                  <thead>
-                    <tr className="bg-white">
-                      <th className="px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-bold leading-normal">
-                        S.No
-                    
-                      </th>
-                      <th className="pr-4 py-3 text-left text-[#111418] w-[400px] text-sm font-bold leading-normal">
-                        S.No
-                    
-                      </th>
-                      <th className="px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-bold leading-normal">
-                        Username
-                      </th>
-                      <th className="px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-bold leading-normal">
-                        Email
-                      </th>
-                      <th className="px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-bold leading-normal">
-                        Joined At
-                      </th>
-                      <th className="px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-bold leading-normal">
-                        Status
-                      </th>
-                      <th className="px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-bold leading-normal">
-                        Phone
-                      </th>
-                      <th className="px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-bold leading-normal">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
+                  {/* ... table header remains the same ... */}
                   <tbody>
-                    {paginatedUsers && paginatedUsers.length > 0 ? (
-                      paginatedUsers.map((user, index) => (
+                    {loading ? (
+                      <tr>
+                        <td colSpan={8} className="text-center py-5">
+                          Loading...
+                        </td>
+                      </tr>
+                    ) : filteredUsers.length > 0 ? (
+                      filteredUsers.map((user, index) => (
                         <tr key={index} className="border-t border-[#dce0e5]">
                           <td className="px-4 py-3 text-[#111418] text-sm">
-                            
                             {(currentPage - 1) * itemsPerPage + index + 1}
-                            
-                           
-                           
                           </td>
                           <td className="pr-4 py-3 text-[#111418] text-sm">
-                          <Avatar />
+                            <Avatar />
                           </td>
                           <td className="px-4 py-3 text-[#111418] text-sm">
                             {user.firstName + " " + user.lastName}
@@ -213,9 +170,11 @@ const UsersPage: React.FC = () => {
                             {user.createdAt}
                           </td>
                           <td className="px-4 py-3 text-[#111418] text-sm">
-                            {user.isBlocked ? <p className="text-red-500 font-bold">Blocked</p> :
-                            
-                            <p className="text-green-500 font-bold">Active</p>}
+                            {user.isBlocked ? (
+                              <p className="text-red-500 font-bold">Blocked</p>
+                            ) : (
+                              <p className="text-green-500 font-bold">Active</p>
+                            )}
                           </td>
                           <td className="px-4 py-3 text-[#111418] text-sm">
                             {user.phone}
@@ -241,7 +200,7 @@ const UsersPage: React.FC = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={7} className="text-center py-5">
+                        <td colSpan={8} className="text-center py-5">
                           No users found.
                         </td>
                       </tr>
@@ -249,9 +208,19 @@ const UsersPage: React.FC = () => {
                   </tbody>
                 </table>
               </div>
-              {/* Pagination */}
+
               <div className="flex justify-center my-4">
-                {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  className={`px-4 py-2 mx-1 rounded bg-white border border-black ${
+                    currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                  }`}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1 || loading}
+                >
+                  <FaArrowLeft />
+                </button>
+
+                {/* {Array.from({ length: totalPages }, (_, index) => (
                   <button
                     key={index}
                     className={`px-4 py-2 mx-1 rounded ${
@@ -260,17 +229,40 @@ const UsersPage: React.FC = () => {
                         : "bg-white border border-black"
                     }`}
                     onClick={() => handlePageChange(index + 1)}
+                    disabled={loading}
                   >
                     {index + 1}
                   </button>
-                ))}
+                ))} */}
+                 <button
+                    
+                    className={`px-4 py-2 mx-1 rounded ${
+                      
+                        "bg-gradient-to-r from-stone-500 to-stone-700 text-white"
+                        
+                    }`}
+                
+                    disabled={loading}
+                  >
+                    {currentPage}
+                  </button>
+
+                <button
+                  className={`px-4 py-2 mx-1 rounded bg-white border border-black ${
+                    currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                  }`}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages || loading}
+                >
+                  <FaArrowRight />
+                </button>
               </div>
             </div>
           </div>
         </div>
         <Toaster position="top-center" richColors />
       </div>
-      {/* Modal */}
+
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-5 rounded-lg shadow-lg">

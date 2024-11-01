@@ -17,9 +17,10 @@ import { useEffect } from 'react';
 import { refreshAccessToken } from './redux/actions/authAciton';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from './redux/store';
+import BlockChecker from './services/BlockChecker';
 
 function App() {
-
+//  BlockChecker()
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {

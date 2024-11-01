@@ -2,6 +2,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Base_URL } from "../../credentials";
+import { useNavigate, useNavigation } from "react-router-dom";
+import { toast } from "sonner";
 
 
 const storedUserInfo = localStorage.getItem('userInfo');
@@ -23,6 +25,13 @@ userAxiosInstance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
+
+    if(error.response.data ===  "User Blocked") {
+     
+      
+      return  toast.error("currently you are restricted.")
+   
+    }
 
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
@@ -47,3 +56,4 @@ userAxiosInstance.interceptors.response.use(
 );
 
 export default userAxiosInstance;
+

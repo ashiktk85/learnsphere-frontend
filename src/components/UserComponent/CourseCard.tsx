@@ -37,8 +37,14 @@ const CourseCard: React.FC<IcourseData> = ({
 
   const gotoCourseDetails = async() => {
     try {
+      if(userInfo?.isBlocked === true) {
+        toast.error("you are blocked.")
+        return navigate('/login')
+      }
       const response = await userAxiosInstance.get(`/check-enrollment/${email}/${courseId}`)
       console.log(response.data,"rs");
+
+      
       
       if (response.data) {
         
