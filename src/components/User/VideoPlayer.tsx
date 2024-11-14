@@ -12,7 +12,6 @@ import dayjs from "dayjs";
 import TutorProfileCard from "./TutorProfileCard";
 import CourseCard from "./CourseCard";
 
-const socket = io(Base_URL);
 
 interface Ivideo {
   _id: string;
@@ -106,6 +105,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       setRating(null);
       setReview('');
       handleCloseModal();
+      toast.success('New Rating added.')
     } catch (error) {
       console.error('Error submitting review:', error);
       toast.error('Failed to submit review');
