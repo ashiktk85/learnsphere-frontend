@@ -6,7 +6,6 @@ import TutorApplicationPage from '../pages/Tutor/TutorApplicationPage';
 import ApplicationFinished from '../pages/Tutor/ApplicationFinished';
 import TutorLogin from '../pages/Tutor/TutorLogin';
 import TutorDashboard from '../pages/Tutor/TutorDashboard';
-import AddSection from '../components/TutorComponent/CourseAddsection';
 import CourseEdit from '../pages/Tutor/CourseEdit';
 import KycPage from '../pages/Tutor/KycPage';
 
