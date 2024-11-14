@@ -3,6 +3,7 @@ import { login, updateUserInfo } from '../actions/userAction';
 import { acceptApplicaitonThunk, updateUserBlockStatus } from '../actions/adminActions';
 import { toast } from 'sonner';
 import { SrvRecord } from 'dns';
+import { encrypt } from '../../utils/encrption';
 
 interface User {
   userId: string;
@@ -57,14 +58,15 @@ const userSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action: PayloadAction<{ accessToken: string;  userInfo: User }>) => {
         const { accessToken, userInfo } = action.payload;
+        console.log(action.payload, "user payload");
+        
         state.userInfo = userInfo;
         state.accessToken = accessToken;
         // state.refreshToken = refreshToken;
         state.loading = false;
-
         localStorage.setItem('accessToken', accessToken);
-        // localStorage.setItem('refreshToken', refreshToken);
-        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        const encryptedData = encrypt(userInfo)
+        localStorage.setItem('userInfo', JSON.stringify(encryptedData));
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;

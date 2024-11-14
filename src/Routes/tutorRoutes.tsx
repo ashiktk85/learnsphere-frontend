@@ -1,14 +1,14 @@
 import React from 'react';
 import {Navigate ,Route , Routes ,Router } from 'react-router-dom'
 import UserProtector from '../services/UserProtector';
-import TutorHome from '../pages/TutorPages/TutorHome';
-import TutorApplicationPage from '../pages/TutorPages/TutorApplicationPage';
-import ApplicationFinished from '../pages/TutorPages/ApplicationFinished';
-import TutorLogin from '../pages/TutorPages/TutorLogin';
-import TutorDashboard from '../pages/TutorPages/TutorDashboard';
+import TutorHome from '../pages/Tutor/TutorHome';
+import TutorApplicationPage from '../pages/Tutor/TutorApplicationPage';
+import ApplicationFinished from '../pages/Tutor/ApplicationFinished';
+import TutorLogin from '../pages/Tutor/TutorLogin';
+import TutorDashboard from '../pages/Tutor/TutorDashboard';
 import AddSection from '../components/TutorComponent/CourseAddsection';
-import CourseEdit from '../pages/TutorPages/CourseEdit';
-import KycPage from '../pages/TutorPages/KycPage';
+import CourseEdit from '../pages/Tutor/CourseEdit';
+import KycPage from '../pages/Tutor/KycPage';
 
 
 const TutorRoutes = () => {

@@ -1,14 +1,14 @@
-import Home from './pages/UserPages/HomePage';
-import SignUp from './pages/UserPages/SignupPage'
-import UserLogin from "./pages/UserPages/LoginPage";
+import Home from './pages/User/Home';
+import SignUp from './pages/User/SignupPage'
+import UserLogin from "./pages/User/LoginPage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import OtpPage from './pages/UserPages/OtpPage';
-import ProfilePage from './pages/UserPages/ProfilePage';
-import AdminLogin from './pages/AdminPages/AdminloginPage';
+import OtpPage from './pages/User/OtpPage';
+import ProfilePage from './pages/User/Profile';
+import AdminLogin from './pages/Admin/AdminloginPage';
 
 import TVScreen from './components/common/UserCommon/404';
-import UserList from './pages/AdminPages/UserListPage';
+import UserList from './pages/Admin/UserListPage';
 import UserRoutes from './Routes/userRoutes';
 import AdminRoutes from './Routes/adminRoutes';
 import TutorRoutes from './Routes/tutorRoutes';
@@ -52,7 +52,5 @@ function App() {
 }
 
 export default App;
-function dispatch(arg0: any) {
-  throw new Error('Function not implemented.');
-}
+
 

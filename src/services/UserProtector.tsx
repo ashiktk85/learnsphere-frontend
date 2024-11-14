@@ -1,5 +1,6 @@
 import React, { useEffect, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { decrypt } from '../utils/encrption';
 
 interface UserProtectorProps {
   children: ReactNode;

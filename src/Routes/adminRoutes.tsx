@@ -1,16 +1,16 @@
 import React from 'react';
 import {Navigate ,Route , Routes ,Router } from 'react-router-dom'
-import AdminLogin from '../pages/AdminPages/AdminloginPage';
-import AdminDashboard from '../pages/AdminPages/AdminDashboard';
-import UserList from '../pages/AdminPages/UserListPage';
-import AdminNewTutorApplications from '../pages/AdminPages/ApplicationListPage';
-import ApplicantDetails from '../pages/AdminPages/ApplicantDetailsPage';
+import AdminLogin from '../pages/Admin/AdminloginPage';
+import AdminDashboard from '../pages/Admin/AdminDashboard';
+import UserList from '../pages/Admin/UserListPage';
+import AdminNewTutorApplications from '../pages/Admin/ApplicationListPage';
+import ApplicantDetails from '../pages/Admin/ApplicantDetailsPage';
 import AdminProtector from '../services/AdminProtector';
-import TutorList from '../pages/AdminPages/TutorListPage';
-import CategoryList from '../components/AdminComponent/CategoryList';
-import AdminReportList from '../components/AdminComponent/AdminReportList';
-import ReportDetailComponent from '../components/AdminComponent/ReportDetailComponent';
-import AdminCoursesPage from '../pages/AdminPages/AdminCoursesPage';
+import TutorList from '../pages/Admin/TutorListPage';
+import CategoryList from '../components/Admin/CategoryList';
+import AdminReportList from '../components/Admin/AdminReportList';
+import ReportDetailComponent from '../components/Admin/ReportDetailComponent';
+import AdminCoursesPage from '../pages/Admin/AdminCoursesPage';
 
 const AdminRoutes = () => {
     return (

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { decrypt } from "../../../utils/encrption";
 
 const Navbar = () => {
 
@@ -7,7 +8,7 @@ const Navbar = () => {
   const navigate = useNavigate()
 
     useEffect(() => {
-      const authStatus = localStorage.getItem('userInfo') === null
+      const authStatus = decrypt(localStorage.getItem('userInfo') === null)
       if (authStatus) {
         setIsLoggedIn(false)
       } else {

@@ -1,24 +1,42 @@
-import React from 'react';
-import {Navigate ,Route , Routes ,Router } from 'react-router-dom'
-import Home from '../pages/UserPages/HomePage';
-import OtpForm from '../components/UserComponent/OtpForm';
-import OtpPage from '../pages/UserPages/OtpPage';
-import UserLogin from '../pages/UserPages/LoginPage';
-import ProfilePage from '../pages/UserPages/ProfilePage';
-import SignUp from '../pages/UserPages/SignupPage';
-import UserProtector from '../services/UserProtector';
-import AllCourses from '../pages/UserPages/AllCourses';
-import CourseDetailsPage from '../pages/UserPages/CourseDetailsPage';
-import Checkout from '../pages/UserPages/Checkout';
+// import React from 'react';
+// import {Navigate ,Route , Routes ,Router } from 'react-router-dom'
+// import Home from '../pages/User/HomePage';
+// import OtpForm from '../components/UserComponent/OtpForm';
+// import OtpPage from '../pages/User/OtpPage';
+// import UserLogin from '../pages/User/LoginPage';
+// import ProfilePage from '../pages/User/ProfilePage';
+// import SignUp from '../pages/User/SignupPage';
+// import UserProtector from '../services/UserProtector';
+// import AllCourses from '../pages/User/AllCourses';
+// import CourseDetailsPage from '../pages/User/CourseDetailsPage';
+// import Checkout from '../pages/User/Checkout';
 
-import MyCourses from '../pages/UserPages/MyCourses';
-import Community from '../pages/UserPages/Community';
-import TutorsPage from '../pages/UserPages/TutorsPage';
-import TutorDetails from '../pages/UserPages/TutorDetails';
-import CoursePlayer2 from '../pages/UserPages/CoursePlayer2';
-import MyOrders from '../pages/UserPages/MyOrders';
-import ChatBotPage from '../pages/UserPages/ChatBotPage';
-import BlockChecker from '../services/BlockChecker';
+import { Route, Routes } from "react-router-dom";
+import Home from "../pages/User/Home";
+import OtpPage from "../pages/User/OtpPage";
+import UserLogin from "../pages/User/LoginPage";
+import UserProtector from "../services/UserProtector";
+import ProfilePage from "../pages/User/Profile";
+import SignUp from "../pages/User/SignupPage";
+import AllCourses from "../pages/User/AllCourses";
+import CourseDetailsPage from "../pages/User/CourseDetailsPage";
+import Checkout from "../pages/User/Checkout";
+import CoursePlayer2 from "../pages/User/CoursePlayer2";
+import MyCourses from "../pages/User/MyCourses";
+import Community from "../pages/User/Community";
+import TutorsPage from "../pages/User/TutorsPage";
+import TutorDetails from "../pages/User/TutorDetails";
+import MyOrders from "../pages/User/MyOrders";
+import ChatBotPage from "../pages/User/ChatBotPage";
+
+// import MyCourses from '../pages/User/MyCourses';
+// import Community from '../pages/User/Community';
+// import TutorsPage from '../pages/User/TutorsPage';
+// import TutorDetails from '../pages/User/TutorDetails';
+// import CoursePlayer2 from '../pages/User/CoursePlayer2';
+// import MyOrders from '../pages/User/MyOrders';
+// import ChatBotPage from '../pages/User/ChatBotPage';
+// import BlockChecker from '../services/BlockChecker';
 
 // import OrderHistory from '../pages/UserPages/OrderHistory';
 
