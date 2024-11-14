@@ -10,6 +10,8 @@ interface AdminProtectorProps {
 const AdminProtector: React.FC<AdminProtectorProps> = ({ children }) => {
     const navigate = useNavigate();
     const admin = useSelector((state : RootState) => state.admin)
+    console.log(admin);
+    
   
     useEffect(() => {
       if (admin.adminInfo?.accessToken === undefined) {
