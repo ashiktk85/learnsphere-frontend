@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { adminLogin } from '../actions/adminActions';
 
 interface Admin {
-  email: string;
+  accessToken: string;
 }
 
 interface AdminState {
