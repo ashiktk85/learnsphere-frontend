@@ -2,7 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { adminLogin } from '../actions/adminActions';
 
 interface Admin {
-  accessToken: string;
+  adminAccessToken: string;
+  adminRefreshToken : string;
 }
 
 interface AdminState {
@@ -36,6 +37,7 @@ const adminSlice = createSlice({
         state.error = null; 
       })
       .addCase(adminLogin.fulfilled, (state, action: PayloadAction<Admin>) => {
+        console.log("payload in slice" , action.payload)
         state.adminInfo = action.payload;
         state.loading = false;
       })

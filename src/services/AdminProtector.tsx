@@ -14,7 +14,7 @@ const AdminProtector: React.FC<AdminProtectorProps> = ({ children }) => {
     
   
     useEffect(() => {
-      if (admin.adminInfo?.accessToken === undefined) {
+      if (admin.adminInfo?.adminAccessToken === undefined) {
         navigate('/admin', {
           state: { message: 'Authorization failed' },
           replace: true,
