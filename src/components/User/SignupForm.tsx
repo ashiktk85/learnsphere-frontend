@@ -198,10 +198,10 @@ const SignupForm: React.FC = () => {
           <p className="text-base absolute text-black/80 bg-[#f5f5f5]">OR</p>
         </div>
 
-        <div className="w-full text-[#060606] my-2 bg-white border-[1.5px] border-black/40 rounded-md p-4 text-center flex items-center justify-center mt-5 cursor-pointer">
+{/*         <div className="w-full text-[#060606] my-2 bg-white border-[1.5px] border-black/40 rounded-md p-4 text-center flex items-center justify-center mt-5 cursor-pointer">
           <FcGoogle className=" mr-2" />
           Sign In with Google
-        </div>
+        </div> */}
 
         <div className="w-full flex items-center justify-center">
           <p className="text-sm font-normal text-black">
