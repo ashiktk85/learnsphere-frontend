@@ -154,10 +154,10 @@ const LoginForm: React.FC = () => {
             </p>
           </div>
 
-          <button className="w-full text-[#060606] bg-white border-[1.5px] border-black/40 rounded-md p-4 text-center flex items-center justify-center">
+{/*           <button className="w-full text-[#060606] bg-white border-[1.5px] border-black/40 rounded-md p-4 text-center flex items-center justify-center">
             <FcGoogle className="mr-2" />
             Sign In with Google
-          </button>
+          </button> */}
 
           <div className="w-full flex items-center justify-center mt-4">
             <p className="text-sm font-normal text-black">
