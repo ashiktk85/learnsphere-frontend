@@ -155,11 +155,18 @@ const LoginForm: React.FC = () => {
             </p>
           </div>
 
+<<<<<<< HEAD
           <div>
             <GoogleAuthButton />
           </div>
 
          
+=======
+{/*           <button className="w-full text-[#060606] bg-white border-[1.5px] border-black/40 rounded-md p-4 text-center flex items-center justify-center">
+            <FcGoogle className="mr-2" />
+            Sign In with Google
+          </button> */}
+>>>>>>> df94682652074b0e87f12cf2c753f43ac68db418
 
           <div className="w-full flex items-center justify-center mt-4">
             <p className="text-sm font-normal text-black">
