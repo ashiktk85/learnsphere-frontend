@@ -9,6 +9,7 @@ import { login } from "../../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import login_video from '../../assets/loginpage_video.mp4'
+import GoogleAuthButton from "./Google_Auth";
 
 const LoginForm: React.FC = () => {
   const dispatch = useDispatch<any>();
@@ -154,10 +155,11 @@ const LoginForm: React.FC = () => {
             </p>
           </div>
 
-          <button className="w-full text-[#060606] bg-white border-[1.5px] border-black/40 rounded-md p-4 text-center flex items-center justify-center">
-            <FcGoogle className="mr-2" />
-            Sign In with Google
-          </button>
+          <div>
+            <GoogleAuthButton />
+          </div>
+
+         
 
           <div className="w-full flex items-center justify-center mt-4">
             <p className="text-sm font-normal text-black">

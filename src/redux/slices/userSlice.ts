@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { login, updateUserInfo } from '../actions/userAction';
+import { googleLogin, login, updateUserInfo } from '../actions/userAction';
 import { acceptApplicaitonThunk, updateUserBlockStatus } from '../actions/adminActions';
 import { toast } from 'sonner';
 import { SrvRecord } from 'dns';
@@ -52,6 +52,24 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+    .addCase(googleLogin.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(googleLogin.fulfilled, (state, action: PayloadAction<{ accessToken: string; userInfo: User }>) => {
+      const { accessToken, userInfo } = action.payload;
+      state.userInfo = userInfo;
+      state.accessToken = accessToken;
+      state.loading = false;
+      localStorage.setItem('accessToken', accessToken);
+      const encryptedData = encrypt(userInfo);
+      localStorage.setItem('userInfo', JSON.stringify(encryptedData));
+    })
+    .addCase(googleLogin.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    })
+
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;

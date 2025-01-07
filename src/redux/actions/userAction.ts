@@ -78,6 +78,25 @@ export const login = createAsyncThunk<{ accessToken: string; userInfo: User }, {
   }
 );
 
+export const googleLogin = createAsyncThunk<{ accessToken: string; userInfo: User }, string | undefined,{ rejectValue: string }>(
+  'user/googleLogin',
+  async (credential, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${Base_URL}/google-login`, {
+        credential,
+      });
+      const { cred: userInfo, accessToken } = response.data; 
+      return { userInfo, accessToken }; 
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Google Login failed');
+    }
+  }
+);
+
+
+
+
+
 export const resendOtp = createAsyncThunk<boolean>(
   'user/resendOtp',
   async (_, { rejectWithValue }) => {
