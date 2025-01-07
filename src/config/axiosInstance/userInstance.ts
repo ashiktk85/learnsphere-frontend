@@ -17,7 +17,7 @@ if(storedUserInfo) {
 const userAxiosInstance = axios.create({
   baseURL: Base_URL,
   withCredentials: true, 
-  // headers: userId ? { 'userId': userId } : {},
+  headers: userId ? { 'userId': userId } : {},
 });
 
 userAxiosInstance.interceptors.response.use(
