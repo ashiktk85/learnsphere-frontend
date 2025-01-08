@@ -1,20 +1,17 @@
-import React from 'react';
+import React from "react";
 import Navbar from "../../components/common/UserCommon/Navbar";
-import Footer from '../../components/common/UserCommon/Footer';
-import LoginForm from '../../components/User/LoginForm';
+import Footer from "../../components/common/UserCommon/Footer";
+import LoginForm from "../../components/User/LoginForm";
 
 const UserLogin: React.FC = () => {
   return (
     <>
-    <div className="max-h-max bg-[#f5f5f5] text-wh">   
-    <LoginForm />
-    <Footer />
-    </div>
+      <div className="min-h-screen bg-[#f5f5f5]">
+        <LoginForm />
+        <Footer />
+      </div>
     </>
   );
 };
 
-
-
-
-export default UserLogin
+export default UserLogin;
